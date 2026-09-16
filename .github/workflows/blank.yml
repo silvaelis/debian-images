@@ -33,5 +33,5 @@ jobs:
       - name: Run a multi-line script
         run: |
           ls -all
-          docker build -t debiancesae:v1
+          docker build -t debiancesae:v1 .
           docker images
