@@ -1,43 +1,41 @@
-# Workflow para criar uma imagem Docker e enviar ao ACR
+# This is a basic workflow to help you get started with Actions
 
-name: Criar uma imagem do docker e enviar ACR
+name: Criar uma imagem do Docker e enviar para o Azure Container Register (ACR)
 
-# Configuração dos gatilhos de execução
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-  # Permite a execução manual na aba Actions
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # 1. Faz o checkout do repositório
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: hello
+        
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
 
-      # 2. Autenticação no Azure Container Registry
-      - name: Log in to Azure Container Registry
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
         run: |
-          echo "${{ secrets.SEGREDO }}" | docker login aula2309acr.azurecr.io -u "aula2309tk" --password-stdin
-
-      # 3. Build e Push da Imagem Docker
-      - name: Build and Push Docker Image
-        run: |
-          ls -la
-          
-          # Nome completo da imagem com tag
-          IMAGE_NAME="aula2309acr.azurecr.io/debiancesae:v1"
-          
-          # Compila a imagem Docker a partir da raiz
-          docker build -t $IMAGE_NAME .
-          
-          # Envia a imagem para o ACR
-          docker push $IMAGE_NAME
-          
-          echo "Imagem enviada com sucesso para o ACR!"
+          ls -all
+          ls hello
+          cd hello
+          docker build -t aula2309acr.azurecr.io/imagem2:v1 .
