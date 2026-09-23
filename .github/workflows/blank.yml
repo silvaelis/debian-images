@@ -5,9 +5,9 @@ name: Criar uma imagem do docker e enviar ACR
 # Configuração dos gatilhos de execução
 on:
   push:
-    branches: [ tarefas ]
+    branches: [ main ]
   pull_request:
-    branches: [ tarefas ]
+    branches: [ main ]
 
   # Permite a execução manual na aba Actions
   workflow_dispatch:
