@@ -17,13 +17,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Faz o checkout do código diretamente no diretório raiz do ambiente de execução
+      # 1. Faz o checkout do repositório
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Executa comandos de teste e build da imagem Docker
-      - name: Build Docker image
+      # 2. Autenticação no Azure Container Registry
+      - name: Log in to Azure Container Registry
+        run: |
+          echo "${{ secrets.SEGREDO }}" | docker login sergio24082026cr.azurecr.io -u "${{ secrets.UTILIZADOR }}" --password-stdin
+
+      # 3. Build e Push da Imagem Docker
+      - name: Build and Push Docker Image
         run: |
           ls -la
-          docker build -t debiancesae:v1 .
-          docker images
+          
+          # Nome completo da imagem com tag
+          IMAGE_NAME="sergio24082026cr.azurecr.io/debiancesae:v1"
+          
+          # Compila a imagem Docker a partir da raiz
+          docker build -t $IMAGE_NAME .
+          
+          # Envia a imagem para o ACR
+          docker push $IMAGE_NAME
+          
+          echo "Imagem enviada com sucesso para o ACR!"
+
