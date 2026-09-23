@@ -24,7 +24,7 @@ jobs:
       # 2. Autenticação no Azure Container Registry
       - name: Log in to Azure Container Registry
         run: |
-          echo "${{ secrets.SEGREDO }}" | docker login docker login -u aula2309tk -p "${{ secrets.UTILIZADOR }}" --password-stdin
+          echo "${{ secrets.SEGREDO }}" | docker login aula2309acr.azurecr.io -u "aula2309tk" --password-stdin
 
       # 3. Build e Push da Imagem Docker
       - name: Build and Push Docker Image
@@ -41,4 +41,3 @@ jobs:
           docker push $IMAGE_NAME
           
           echo "Imagem enviada com sucesso para o ACR!"
-
